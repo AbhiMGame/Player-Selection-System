@@ -1,7 +1,7 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
 
 public class PlayerListManager : MonoBehaviour
 {
@@ -9,6 +9,9 @@ public class PlayerListManager : MonoBehaviour
     [SerializeField] private GameObject playerRowPrefab;
     [SerializeField] private Transform contentParent;
     [SerializeField] private List<PlayerDataScriptableObject> playerDataList;
+
+    private List<GameObject> selectedPlayerRows = new List<GameObject>();
+    private const int maxSelectedPlayers = 5;
 
     private void Start()
     {
@@ -39,23 +42,86 @@ public class PlayerListManager : MonoBehaviour
         if (rowUI != null)
         {
             rowUI.SetupRow(playerData);
+            AddClickListener(row, playerData);
         }
         else
         {
-            Debug.LogError("PlayerRowUI component missing from row prefab!");
-        }
-
-        // Add click functionality
-        Button button = row.GetComponent<Button>();
-        if (button != null)
-        {
-            button.onClick.AddListener(() => OnPlayerSelected(playerData));
+            // Handle the case where the PlayerRowUI component is missing
+            ConfigurePlayerRowWithoutUI(row, playerData);
         }
     }
 
-    private void OnPlayerSelected(PlayerDataScriptableObject playerData)
+    private void AddClickListener(GameObject row, PlayerDataScriptableObject playerData)
     {
-        Debug.Log($"Selected player: {playerData.playerName}");
-        // Add your selection logic here
+        Button button = row.GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.AddListener(() => TogglePlayerSelection(row, playerData));
+        }
+        else
+        {
+            // Add a new Button component to the row
+            button = row.AddComponent<Button>();
+            button.onClick.AddListener(() => TogglePlayerSelection(row, playerData));
+        }
+
+        // Set the background color based on the selected state
+        SetRowSelected(row, playerData.isSelected, playerData);
+    }
+
+    private void ConfigurePlayerRowWithoutUI(GameObject row, PlayerDataScriptableObject playerData)
+    {
+        // Get the Image component
+        Image image = row.GetComponentInChildren<Image>();
+        if (image != null)
+        {
+            image.sprite = playerData.playerImage;
+        }
+
+        // Get the TextMeshProUGUI components
+        TextMeshProUGUI[] textComponents = row.GetComponentsInChildren<TextMeshProUGUI>();
+        if (textComponents.Length >= 2)
+        {
+            textComponents[0].text = playerData.playerName;
+            textComponents[1].text = playerData.playerAttributes.ToString();
+            textComponents[2].text = playerData.playerExperience;
+        }
+
+        AddClickListener(row, playerData);
+    }
+
+    private void TogglePlayerSelection(GameObject row, PlayerDataScriptableObject playerData)
+    {
+        if (selectedPlayerRows.Contains(row))
+        {
+            // Deselect the row
+            selectedPlayerRows.Remove(row);
+            SetRowSelected(row, false, playerData);
+        }
+        else
+        {
+            // Select the row
+            if (selectedPlayerRows.Count < maxSelectedPlayers)
+            {
+                selectedPlayerRows.Add(row);
+                SetRowSelected(row, true, playerData);
+            }
+            else
+            {
+                Debug.Log("Maximum number of players selected.");
+            }
+        }
+    }
+
+    private void SetRowSelected(GameObject row, bool isSelected, PlayerDataScriptableObject playerData)
+    {
+        playerData.isSelected = isSelected;
+
+        // Get the Image component
+        Image image = row.GetComponentInChildren<Image>();
+        if (image != null)
+        {
+            image.color = isSelected ? Color.gray : Color.white;
+        }
     }
 }

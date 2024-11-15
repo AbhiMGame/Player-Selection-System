@@ -493,7 +493,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4550299920899810188}
   - component: {fileID: 2168217531535377091}
-  - component: {fileID: -5541937291234804216}
+  - component: {fileID: 4204709718328462524}
   m_Layer: 5
   m_Name: Player Profile Row
   m_TagString: Untagged
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &-5541937291234804216
+--- !u!114 &4204709718328462524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

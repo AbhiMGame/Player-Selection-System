@@ -9,4 +9,5 @@ public class PlayerDataScriptableObject : ScriptableObject
     public string playerName;  
     public int playerAttributes;  
     public string playerExperience;
+    public bool isSelected;
 }
