@@ -18,6 +18,7 @@ public class PlayerListManager : MonoBehaviour
 
     private void Start()
     {
+        ResetPlayerSelections();
         PopulatePlayerList();
         UpdateRemainingSelectionsText();
     }
@@ -185,7 +186,24 @@ public class PlayerListManager : MonoBehaviour
         if (remainingSelectionsText != null)
         {
             int remaining = maxSelectedPlayers - selectedPlayerRows.Count;
-            remainingSelectionsText.text = $"Remaining Selections: {remaining}";
+            remainingSelectionsText.text = $"Player Remaining: {remaining}";
         }
     }
+
+    public List<GameObject> GetSelectedPlayers()
+    {
+        return new List<GameObject>(selectedPlayerRows);
+    }
+
+    private void ResetPlayerSelections()
+    {
+        foreach (var playerData in playerDataList)
+        {
+            playerData.isSelected = false;
+        }
+
+        // Optionally clear any in-memory references to selected rows.
+        selectedPlayerRows.Clear();
+    }
+
 }
