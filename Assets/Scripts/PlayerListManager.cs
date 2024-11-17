@@ -9,6 +9,7 @@ public class PlayerListManager : MonoBehaviour
     [SerializeField] private GameObject playerRowPrefab;
     [SerializeField] private Transform contentParent;
     [SerializeField] private List<PlayerDataScriptableObject> playerDataList;
+    private List<GameObject> selectedPlayers = new List<GameObject>();
 
     // Optional: Add UI text to show remaining selections
     [SerializeField] private TextMeshProUGUI remainingSelectionsText;
@@ -22,6 +23,7 @@ public class PlayerListManager : MonoBehaviour
         PopulatePlayerList();
         UpdateRemainingSelectionsText();
     }
+
 
     private void PopulatePlayerList()
     {
@@ -37,6 +39,12 @@ public class PlayerListManager : MonoBehaviour
             GameObject newRow = Instantiate(playerRowPrefab, contentParent);
             ConfigurePlayerRow(newRow, playerData);
         }
+    }
+
+    public void ClearSelectedPlayers()
+    {
+        selectedPlayers.Clear();
+        Debug.Log("Selected players list has been cleared.");
     }
 
     private void ConfigurePlayerRow(GameObject row, PlayerDataScriptableObject playerData)
@@ -141,6 +149,15 @@ public class PlayerListManager : MonoBehaviour
         if (image != null)
         {
             image.color = isSelected ? Color.gray : Color.white;
+        }
+
+        TextMeshProUGUI[] textComponents = row.GetComponentsInChildren<TextMeshProUGUI>();
+        foreach (TextMeshProUGUI text in textComponents)
+        {
+            if (text != null)
+            {
+                text.color = isSelected ? Color.gray : Color.white;  
+            }
         }
     }
 

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0357308659a41aa46a5119a1e0ddf869, type: 3}
   m_Name: Player_Data_2
   m_EditorClassIdentifier: 
-  playerImage: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  playerName: Vimal
-  playerAttributes: 44
-  playerExperience: Mid
+  playerImage: {fileID: -5960830289834092126, guid: 71df7c98db478b44c95867697828eed4, type: 3}
+  playerName: Messi
+  playerAttributes: 88
+  playerExperience: Advanced
+  isSelected: 0

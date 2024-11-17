@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0357308659a41aa46a5119a1e0ddf869, type: 3}
   m_Name: Player_Data_1
   m_EditorClassIdentifier: 
-  playerImage: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  playerName: John
-  playerAttributes: 12
-  playerExperience: Beginnner
+  playerImage: {fileID: -7293013115953481130, guid: b726e9ac2c8c97f4497345eb1c61c79a, type: 3}
+  playerName: Ronaldo
+  playerAttributes: 88
+  playerExperience: Advanced
+  isSelected: 1

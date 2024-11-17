@@ -17,6 +17,7 @@ public class PlayerSlotManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private PlayerSlot[] playerSlots = new PlayerSlot[5];
     [SerializeField] private Button saveButton;
+    [SerializeField] private Button modifyButton; // Reference to the Modify button
 
     [Header("Screens")]
     [SerializeField] private GameObject playerSelectionScreenPanel;  // The panel with the list
@@ -27,7 +28,7 @@ public class PlayerSlotManager : MonoBehaviour
 
     private void Start()
     {
-        // Make sure the player selection screen is visible and player screen is hidden initially
+        // Ensure the player selection screen is visible and player screen is hidden initially
         if (playerSelectionScreenPanel != null)
             playerSelectionScreenPanel.SetActive(true);
         if (playerScreenPanel != null)
@@ -42,6 +43,17 @@ public class PlayerSlotManager : MonoBehaviour
         else
         {
             Debug.LogError("Save button reference is missing!");
+        }
+
+        // Add listener to modify button
+        if (modifyButton != null)
+        {
+            modifyButton.onClick.RemoveAllListeners();  // Clear any existing listeners
+            modifyButton.onClick.AddListener(OnModifyButtonClicked);
+        }
+        else
+        {
+            Debug.LogError("Modify button reference is missing!");
         }
     }
 
@@ -87,6 +99,27 @@ public class PlayerSlotManager : MonoBehaviour
         SwitchToPlayerScreen();
     }
 
+    public void OnModifyButtonClicked()
+    {
+        Debug.Log("Modify button clicked");  // Debugging line
+
+        // Clear the current selection
+        playerListManager.ClearSelectedPlayers();  // Clear selected players in PlayerListManager
+
+        // Reset player slots
+        for (int i = 0; i < playerSlots.Length; i++)
+        {
+            if (playerSlots[i] != null)
+            {
+                ClearPlayerSlot(playerSlots[i]);
+                Debug.Log($"Cleared player slot {i}");  // Debugging line
+            }
+        }
+
+        // Switch back to player selection screen
+        SwitchToPlayerSelectionScreen();
+    }
+
     private void UpdatePlayerSlot(PlayerSlot slot, PlayerDataScriptableObject playerData)
     {
         if (slot.playerImage != null && playerData.playerImage != null)
@@ -110,9 +143,32 @@ public class PlayerSlotManager : MonoBehaviour
         }
     }
 
+    private void ClearPlayerSlot(PlayerSlot slot)
+    {
+        if (slot.playerImage != null)
+        {
+            slot.playerImage.sprite = null;
+        }
+
+        if (slot.playerNameText != null)
+        {
+            slot.playerNameText.text = string.Empty;
+        }
+
+        if (slot.attributesText != null)
+        {
+            slot.attributesText.text = string.Empty;
+        }
+
+        if (slot.experienceText != null)
+        {
+            slot.experienceText.text = string.Empty;
+        }
+    }
+
     private void SwitchToPlayerScreen()
     {
-        Debug.Log("Switching screens");  // Debugging line
+        Debug.Log("Switching to Player Screen");  // Debugging line
 
         if (playerSelectionScreenPanel != null)
         {
@@ -132,6 +188,31 @@ public class PlayerSlotManager : MonoBehaviour
         else
         {
             Debug.LogError("Player Screen Panel reference is missing!");
+        }
+    }
+
+    private void SwitchToPlayerSelectionScreen()
+    {
+        Debug.Log("Switching to Player Selection Screen");  // Debugging line
+
+        if (playerScreenPanel != null)
+        {
+            playerScreenPanel.SetActive(false);
+            Debug.Log("Player Screen deactivated");  // Debugging line
+        }
+        else
+        {
+            Debug.LogError("Player Screen Panel reference is missing!");
+        }
+
+        if (playerSelectionScreenPanel != null)
+        {
+            playerSelectionScreenPanel.SetActive(true);
+            Debug.Log("Player Selection Screen activated");  // Debugging line
+        }
+        else
+        {
+            Debug.LogError("Player Selection Screen Panel reference is missing!");
         }
     }
 }
