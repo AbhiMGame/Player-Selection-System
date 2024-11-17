@@ -10,12 +10,16 @@ public class PlayerListManager : MonoBehaviour
     [SerializeField] private Transform contentParent;
     [SerializeField] private List<PlayerDataScriptableObject> playerDataList;
 
+    // Optional: Add UI text to show remaining selections
+    [SerializeField] private TextMeshProUGUI remainingSelectionsText;
+
     private List<GameObject> selectedPlayerRows = new List<GameObject>();
     private const int maxSelectedPlayers = 5;
 
     private void Start()
     {
         PopulatePlayerList();
+        UpdateRemainingSelectionsText();
     }
 
     private void PopulatePlayerList()
@@ -49,6 +53,13 @@ public class PlayerListManager : MonoBehaviour
             // Handle the case where the PlayerRowUI component is missing
             ConfigurePlayerRowWithoutUI(row, playerData);
         }
+
+        // If the player was previously selected, restore the selection
+        if (playerData.isSelected)
+        {
+            selectedPlayerRows.Add(row);
+            SetRowSelected(row, true, playerData);
+        }
     }
 
     private void AddClickListener(GameObject row, PlayerDataScriptableObject playerData)
@@ -65,8 +76,8 @@ public class PlayerListManager : MonoBehaviour
             button.onClick.AddListener(() => TogglePlayerSelection(row, playerData));
         }
 
-        // Set the background color based on the selected state
-        SetRowSelected(row, playerData.isSelected, playerData);
+        // Update the button's interactability based on selection state
+        UpdateButtonInteractability(button, playerData.isSelected);
     }
 
     private void ConfigurePlayerRowWithoutUI(GameObject row, PlayerDataScriptableObject playerData)
@@ -97,20 +108,27 @@ public class PlayerListManager : MonoBehaviour
             // Deselect the row
             selectedPlayerRows.Remove(row);
             SetRowSelected(row, false, playerData);
+
+            // Enable all disabled buttons when a player is deselected
+            UpdateAllButtonsInteractability();
         }
         else
         {
-            // Select the row
+            // Only allow selection if under the maximum limit
             if (selectedPlayerRows.Count < maxSelectedPlayers)
             {
                 selectedPlayerRows.Add(row);
                 SetRowSelected(row, true, playerData);
-            }
-            else
-            {
-                Debug.Log("Maximum number of players selected.");
+
+                // If we've reached the maximum, disable unselected buttons
+                if (selectedPlayerRows.Count >= maxSelectedPlayers)
+                {
+                    DisableUnselectedButtons();
+                }
             }
         }
+
+        UpdateRemainingSelectionsText();
     }
 
     private void SetRowSelected(GameObject row, bool isSelected, PlayerDataScriptableObject playerData)
@@ -122,6 +140,52 @@ public class PlayerListManager : MonoBehaviour
         if (image != null)
         {
             image.color = isSelected ? Color.gray : Color.white;
+        }
+    }
+
+    private void UpdateButtonInteractability(Button button, bool isSelected)
+    {
+        // If we're at max selections, only selected buttons should be interactable
+        if (selectedPlayerRows.Count >= maxSelectedPlayers)
+        {
+            button.interactable = isSelected;
+        }
+        else
+        {
+            button.interactable = true;
+        }
+    }
+
+    private void DisableUnselectedButtons()
+    {
+        foreach (Transform child in contentParent)
+        {
+            Button button = child.GetComponent<Button>();
+            if (button != null && !selectedPlayerRows.Contains(child.gameObject))
+            {
+                button.interactable = false;
+            }
+        }
+    }
+
+    private void UpdateAllButtonsInteractability()
+    {
+        foreach (Transform child in contentParent)
+        {
+            Button button = child.GetComponent<Button>();
+            if (button != null)
+            {
+                button.interactable = true;
+            }
+        }
+    }
+
+    private void UpdateRemainingSelectionsText()
+    {
+        if (remainingSelectionsText != null)
+        {
+            int remaining = maxSelectedPlayers - selectedPlayerRows.Count;
+            remainingSelectionsText.text = $"Remaining Selections: {remaining}";
         }
     }
 }
