@@ -20,6 +20,8 @@ public class PlayerRowUI : MonoBehaviour
 
     public void SetupRow(PlayerDataScriptableObject playerData)
     {
+        this.playerData = playerData;  // Ensure the field is set
+
         if (playerImage != null)
         {
             playerImage.sprite = playerData.playerImage;
