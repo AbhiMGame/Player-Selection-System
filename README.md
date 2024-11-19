@@ -2,6 +2,9 @@
  
 The Player Selection System is designed to allow the user to select up to 5 players from a list of available players, view the selected players on another screen, and save or modify their selection. It uses a combination of Unity's Scriptable Objects, MVC architecture, and UI components to create a flexible and modular system.
 
+# User Flow
+
+![Logo](Player Selection.png)
 
 # Architecture
 MVC 
