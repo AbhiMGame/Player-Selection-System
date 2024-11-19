@@ -11,7 +11,7 @@ public class PlayerListManager : MonoBehaviour
     [SerializeField] private List<PlayerDataScriptableObject> playerDataList;
     private List<GameObject> selectedPlayers = new List<GameObject>();
 
-    // Optional: Add UI text to show remaining selections
+   
     [SerializeField] private TextMeshProUGUI remainingSelectionsText;
 
     private List<GameObject> selectedPlayerRows = new List<GameObject>();
@@ -27,13 +27,13 @@ public class PlayerListManager : MonoBehaviour
 
     private void PopulatePlayerList()
     {
-        // Clear existing content if any
+        
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
 
-        // Create new rows for each player data
+        
         foreach (var playerData in playerDataList)
         {
             GameObject newRow = Instantiate(playerRowPrefab, contentParent);
@@ -49,7 +49,6 @@ public class PlayerListManager : MonoBehaviour
 
     private void ConfigurePlayerRow(GameObject row, PlayerDataScriptableObject playerData)
     {
-        // Get references to UI components in the row prefab
         PlayerRowUI rowUI = row.GetComponent<PlayerRowUI>();
 
         if (rowUI != null)
@@ -59,11 +58,10 @@ public class PlayerListManager : MonoBehaviour
         }
         else
         {
-            // Handle the case where the PlayerRowUI component is missing
+            
             ConfigurePlayerRowWithoutUI(row, playerData);
         }
 
-        // If the player was previously selected, restore the selection
         if (playerData.isSelected)
         {
             selectedPlayerRows.Add(row);
@@ -80,25 +78,22 @@ public class PlayerListManager : MonoBehaviour
         }
         else
         {
-            // Add a new Button component to the row
             button = row.AddComponent<Button>();
             button.onClick.AddListener(() => TogglePlayerSelection(row, playerData));
         }
-
-        // Update the button's interactability based on selection state
         UpdateButtonInteractability(button, playerData.isSelected);
     }
 
     private void ConfigurePlayerRowWithoutUI(GameObject row, PlayerDataScriptableObject playerData)
     {
-        // Get the Image component
+       
         Image image = row.GetComponentInChildren<Image>();
         if (image != null)
         {
             image.sprite = playerData.playerImage;
         }
 
-        // Get the TextMeshProUGUI components
+       
         TextMeshProUGUI[] textComponents = row.GetComponentsInChildren<TextMeshProUGUI>();
         if (textComponents.Length >= 2)
         {
@@ -114,22 +109,22 @@ public class PlayerListManager : MonoBehaviour
     {
         if (selectedPlayerRows.Contains(row))
         {
-            // Deselect the row
+           
             selectedPlayerRows.Remove(row);
             SetRowSelected(row, false, playerData);
 
-            // Enable all disabled buttons when a player is deselected
+           
             UpdateAllButtonsInteractability();
         }
         else
         {
-            // Only allow selection if under the maximum limit
+           
             if (selectedPlayerRows.Count < maxSelectedPlayers)
             {
                 selectedPlayerRows.Add(row);
                 SetRowSelected(row, true, playerData);
 
-                // If we've reached the maximum, disable unselected buttons
+                
                 if (selectedPlayerRows.Count >= maxSelectedPlayers)
                 {
                     DisableUnselectedButtons();
@@ -144,7 +139,7 @@ public class PlayerListManager : MonoBehaviour
     {
         playerData.isSelected = isSelected;
 
-        // Get the Image component
+        
         Image image = row.GetComponentInChildren<Image>();
         if (image != null)
         {
@@ -163,7 +158,7 @@ public class PlayerListManager : MonoBehaviour
 
     private void UpdateButtonInteractability(Button button, bool isSelected)
     {
-        // If we're at max selections, only selected buttons should be interactable
+       
         if (selectedPlayerRows.Count >= maxSelectedPlayers)
         {
             button.interactable = isSelected;
@@ -218,8 +213,6 @@ public class PlayerListManager : MonoBehaviour
         {
             playerData.isSelected = false;
         }
-
-        // Optionally clear any in-memory references to selected rows.
         selectedPlayerRows.Clear();
     }
 
