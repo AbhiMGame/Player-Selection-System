@@ -46,7 +46,6 @@ public class PlayerRowUI : MonoBehaviour
     public void SetSelected(bool selected)
     {
         isSelected = selected;
-        // Update the visual appearance of the row based on selection state
         GetComponent<Image>().color = selected ? Color.gray : Color.red;
     }
 }

@@ -17,27 +17,27 @@ public class PlayerSlotManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private PlayerSlot[] playerSlots = new PlayerSlot[5];
     [SerializeField] private Button saveButton;
-    [SerializeField] private Button modifyButton; // Reference to the Modify button
+    [SerializeField] private Button modifyButton; 
 
     [Header("Screens")]
-    [SerializeField] private GameObject playerSelectionScreenPanel;  // The panel with the list
-    [SerializeField] private GameObject playerScreenPanel;          // The panel with the 5 slots
+    [SerializeField] private GameObject playerSelectionScreenPanel;  
+    [SerializeField] private GameObject playerScreenPanel;          
 
     [Header("References")]
     [SerializeField] private PlayerListManager playerListManager;
 
     private void Start()
     {
-        // Ensure the player selection screen is visible and player screen is hidden initially
+        
         if (playerSelectionScreenPanel != null)
             playerSelectionScreenPanel.SetActive(true);
         if (playerScreenPanel != null)
             playerScreenPanel.SetActive(false);
 
-        // Add listener to save button
+       
         if (saveButton != null)
         {
-            saveButton.onClick.RemoveAllListeners();  // Clear any existing listeners
+            saveButton.onClick.RemoveAllListeners();  
             saveButton.onClick.AddListener(OnSaveButtonClicked);
         }
         else
@@ -45,10 +45,10 @@ public class PlayerSlotManager : MonoBehaviour
             Debug.LogError("Save button reference is missing!");
         }
 
-        // Add listener to modify button
+       
         if (modifyButton != null)
         {
-            modifyButton.onClick.RemoveAllListeners();  // Clear any existing listeners
+            modifyButton.onClick.RemoveAllListeners();  
             modifyButton.onClick.AddListener(OnModifyButtonClicked);
         }
         else
@@ -59,19 +59,19 @@ public class PlayerSlotManager : MonoBehaviour
 
     public void OnSaveButtonClicked()
     {
-        Debug.Log("Save button clicked");  // Debugging line
+        Debug.Log("Save button clicked");  
 
         List<GameObject> selectedPlayers = playerListManager.GetSelectedPlayers();
-        Debug.Log($"Selected players count: {selectedPlayers.Count}");  // Debugging line
+        Debug.Log($"Selected players count: {selectedPlayers.Count}");
 
-        // Check if we have the correct number of players
+       
         if (selectedPlayers.Count != 5)
         {
             Debug.LogWarning($"Please select exactly 5 players! Currently selected: {selectedPlayers.Count}");
             return;
         }
 
-        // Populate each slot with player data
+       
         for (int i = 0; i < selectedPlayers.Count; i++)
         {
             if (i < playerSlots.Length && playerSlots[i] != null)
@@ -82,7 +82,7 @@ public class PlayerSlotManager : MonoBehaviour
                 if (rowUI != null && rowUI.PlayerData != null)
                 {
                     UpdatePlayerSlot(playerSlots[i], rowUI.PlayerData);
-                    Debug.Log($"Updated player slot {i} with player: {rowUI.PlayerData.playerName}");  // Debugging line
+                    Debug.Log($"Updated player slot {i} with player: {rowUI.PlayerData.playerName}");  
                 }
                 else
                 {
@@ -95,28 +95,26 @@ public class PlayerSlotManager : MonoBehaviour
             }
         }
 
-        // Switch screens
         SwitchToPlayerScreen();
     }
 
     public void OnModifyButtonClicked()
     {
-        Debug.Log("Modify button clicked");  // Debugging line
+        Debug.Log("Modify button clicked");  
 
-        // Clear the current selection
-        playerListManager.ClearSelectedPlayers();  // Clear selected players in PlayerListManager
+        playerListManager.ClearSelectedPlayers();  
 
-        // Reset player slots
+        
         for (int i = 0; i < playerSlots.Length; i++)
         {
             if (playerSlots[i] != null)
             {
                 ClearPlayerSlot(playerSlots[i]);
-                Debug.Log($"Cleared player slot {i}");  // Debugging line
+                Debug.Log($"Cleared player slot {i}");  
             }
         }
 
-        // Switch back to player selection screen
+        
         SwitchToPlayerSelectionScreen();
     }
 
@@ -168,37 +166,37 @@ public class PlayerSlotManager : MonoBehaviour
 
     private void SwitchToPlayerScreen()
     {
-        Debug.Log("Switching to Player Screen");  // Debugging line
+     
 
         if (playerSelectionScreenPanel != null)
         {
             playerSelectionScreenPanel.SetActive(false);
-            Debug.Log("Player Selection Screen deactivated");  // Debugging line
+            
         }
         else
         {
-            Debug.LogError("Player Selection Screen Panel reference is missing!");
+            
         }
 
         if (playerScreenPanel != null)
         {
             playerScreenPanel.SetActive(true);
-            Debug.Log("Player Screen activated");  // Debugging line
+            
         }
         else
         {
-            Debug.LogError("Player Screen Panel reference is missing!");
+            
         }
     }
 
     private void SwitchToPlayerSelectionScreen()
     {
-        Debug.Log("Switching to Player Selection Screen");  // Debugging line
+        
 
         if (playerScreenPanel != null)
         {
             playerScreenPanel.SetActive(false);
-            Debug.Log("Player Screen deactivated");  // Debugging line
+           
         }
         else
         {
@@ -208,7 +206,7 @@ public class PlayerSlotManager : MonoBehaviour
         if (playerSelectionScreenPanel != null)
         {
             playerSelectionScreenPanel.SetActive(true);
-            Debug.Log("Player Selection Screen activated");  // Debugging line
+           
         }
         else
         {
