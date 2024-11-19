@@ -9,3 +9,7 @@ The Player Selection System is designed to allow the user to select up to 5 play
 # Architecture
 MVC 
 This project follows the Model-View-Controller (MVC) architecture pattern to separate concerns and make the codebase more modular and maintainable.
+
+#Final Screens
+![Screen1](https://github.com/AbhiMGame/Player-Selection-System/blob/main/Screen1.png)
+![Screen2](https://github.com/AbhiMGame/Player-Selection-System/blob/main/Screen2.png)
