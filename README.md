@@ -4,7 +4,7 @@ The Player Selection System is designed to allow the user to select up to 5 play
 
 # User Flow
 
-![Logo](Player Selection.png)
+![Logo](https://github.com/AbhiMGame/Player-Selection-System/blob/main/Player%20Selection.png)
 
 # Architecture
 MVC 
